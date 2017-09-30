@@ -1,0 +1,7 @@
+c:\users\zzz\source\repos\Client\Client\bin\Debug\Client.exe.config
+c:\users\zzz\source\repos\Client\Client\bin\Debug\Client.exe
+c:\users\zzz\source\repos\Client\Client\bin\Debug\Client.pdb
+c:\users\zzz\source\repos\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+c:\users\zzz\source\repos\Client\Client\obj\Debug\Client.exe
+c:\users\zzz\source\repos\Client\Client\obj\Debug\Client.pdb
+c:\users\zzz\source\repos\Client\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
