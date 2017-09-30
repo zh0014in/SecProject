@@ -11,17 +11,20 @@ namespace Client
 {
     class Program : WebClient
     {
+        
         static void Main(string[] args)
         {
             Program p = new Program();
             do
             {
-                p.Request();
-                System.Threading.Thread.Sleep(5000);
+                //p.Request();
+                Console.WriteLine( p.readHtmlPage());
+                System.Threading.Thread.Sleep(2000);
             } while (true);
             
         }
 
+        string url = "https://securityproject.000webhostapp.com/login.php";
         protected override WebRequest GetWebRequest(Uri address)
         {
             HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
@@ -33,7 +36,7 @@ namespace Client
         void Request()
         {
             string html = string.Empty;
-            string url = "https://192.168.0.111";
+            
             ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
 
             var request = GetWebRequest(new Uri(url));
@@ -46,7 +49,52 @@ namespace Client
             }
 
             Console.WriteLine(html);
+        }
 
+        private String readHtmlPage()
+        {
+
+            //setup some variables
+
+            String username = "demo";
+            String password = "password";
+
+            //setup some variables end
+
+            String result = "";
+            String strPost = "username=" + username + "&password=" + password;
+            StreamWriter myWriter = null;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            HttpWebRequest objRequest = (HttpWebRequest)WebRequest.Create(url);
+            objRequest.KeepAlive = false;
+            objRequest.Method = "POST";
+            objRequest.ContentLength = strPost.Length;
+            objRequest.ContentType = "application/x-www-form-urlencoded";
+
+            try
+            {
+                myWriter = new StreamWriter(objRequest.GetRequestStream());
+                myWriter.Write(strPost);
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+            finally
+            {
+                myWriter.Close();
+            }
+
+            HttpWebResponse objResponse = (HttpWebResponse)objRequest.GetResponse();
+            using (StreamReader sr =
+               new StreamReader(objResponse.GetResponseStream()))
+            {
+                result = sr.ReadToEnd();
+
+                // Close and clean up the StreamReader
+                sr.Close();
+            }
+            return result;
         }
 
         bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
