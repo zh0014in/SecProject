@@ -18,13 +18,13 @@ namespace Client
             do
             {
                 //p.Request();
-                Console.WriteLine( p.readHtmlPage());
-                System.Threading.Thread.Sleep(2000);
+                Console.WriteLine( p.postForm());
+                System.Threading.Thread.Sleep(1000);
             } while (true);
             
         }
 
-        string url = "https://securityproject.000webhostapp.com/login.php";
+        string url = "https://192.168.0.115/login.php";
         protected override WebRequest GetWebRequest(Uri address)
         {
             HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
@@ -51,7 +51,7 @@ namespace Client
             Console.WriteLine(html);
         }
 
-        private String readHtmlPage()
+        private String postForm()
         {
 
             //setup some variables
@@ -65,6 +65,7 @@ namespace Client
             String strPost = "username=" + username + "&password=" + password;
             StreamWriter myWriter = null;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
             HttpWebRequest objRequest = (HttpWebRequest)WebRequest.Create(url);
             objRequest.KeepAlive = false;
             objRequest.Method = "POST";
