@@ -1,0 +1,71 @@
+﻿//=======================Model Details===========================
+enum{ServerHello,ServerCertificate,ServerKeyExchange,
+        ServerHelloDone,ServerChangeCipherSpec,ServerEncryptedhandshakeMessage,HelloRequest,
+        Certificate,KeyExchange,CertificateVerify,ChangeCipherSpec,EncryptedhandshakeMessage,Finished,Hello,
+        Nobody, Client, Server, 
+        client_server_key};
+
+channel network 0;
+
+var client_connects = Nobody;
+var server_connects = Nobody;
+
+ClientProc() = ClientNegotiate();
+ClientNegotiate() = 
+   network!Client.Hello ->
+   network?ServerHello ->
+   network?ServerCertificate ->
+   network?ServerHelloDone ->
+   network!Client.KeyExchange ->
+   network!Client.ChangeCipherSpec ->
+   network!Client.EncryptedhandshakeMessage ->
+   network?ServerChangeCipherSpec ->
+   network?ServerFinished ->
+   clientconnected{client_connects = Server} ->
+   ClientConnected();
+   
+ClientConnected() = network?client_server_key.HelloRequest -> ClientReNegotiate();
+
+ClientReNegotiate() = 
+   network!client_server_key.Client.Hello ->
+   network?client_server_key.ServerHello ->
+   network?client_server_key.ServerChangeCipherSpec ->
+   network?client_server_key.ServerEncryptedhandshakeMessage ->
+   network!client_server_key.Client.ChangeCipherSpec ->
+   network!client_server_key.Client.EncryptedhandshakeMessage ->
+   ClientConnected();
+
+ServerProc() = ServerNegotiate();
+ServerNegotiate() = 
+   network?x.Hello ->
+   network!ServerHello ->
+   network!ServerCertificate ->
+   network!ServerHelloDone ->
+   network?x.KeyExchange ->
+   network?x.ChangeCipherSpec ->
+   network?x.EncryptedhandshakeMessage ->
+   network!ServerChangeCipherSpec ->
+   network!ServerEncryptedhandshakeMessage ->
+   serverconnected{server_connects = x} ->
+   ServerConnected(x);
+
+ServerConnected(x) =
+   network!client_server_key.HelloRequest -> ServerReNegotiate(client_server_key);
+
+ServerReNegotiate(x) = 
+   network?x.y.Hello ->
+   network!x.ServerHello ->
+   network!x.ServerChangeCipherSpec ->
+   network!x.ServerEncryptedhandshakeMessage ->
+   network?x.y.ChangeCipherSpec ->
+   network?x.y.EncryptedhandshakeMessage ->
+   serverconnected{server_connects = y} ->
+   ServerConnected(y);
+
+aSystem = ClientProc() ||| ServerProc();
+
+TLS = ServerProc() ||| ClientProc();
+
+#define violation server_connects == Client && client_connects == Server;
+#assert TLS deadlockfree;
+#assert TLS reaches violation;

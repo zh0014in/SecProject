@@ -1,0 +1,81 @@
+﻿//=======================Model Details===========================
+enum{ServerHello,ServerCertificate,ServerKeyExchange,
+        ServerHelloDone,ServerChangeCipherSpec,ServerFinished,HelloRequest,
+        Certificate,KeyExchange,CertificateVerify,ChangeCipherSpec,Finished,Hello,
+        Nobody, Client, Server, 
+        client_server_key};
+
+channel network 0;
+
+var client_connects = Nobody;
+var server_connects = Nobody;
+
+ClientProc() = ClientNegotiate();
+ClientNegotiate() = 
+   network!Client.Hello ->
+   network?ServerHello ->
+   network?ServerCertificate ->
+   network?ServerKeyExchange ->
+   network?ServerHelloDone ->
+   network!Client.KeyExchange ->
+   network!Client.ChangeCipherSpec ->
+   network!Client.Finished ->
+   network?ServerChangeCipherSpec ->
+   network?ServerFinished ->
+   clientconnected{client_connects = Server} ->
+   ClientConnected();
+   
+ClientConnected() = network?client_server_key.HelloRequest -> ClientReNegotiate();
+
+ClientReNegotiate() = 
+   network!client_server_key.Client.Hello ->
+   network?client_server_key.ServerHello ->
+   network?client_server_key.ServerCertificate ->
+   network?client_server_key.ServerKeyExchange ->
+   network?client_server_key.ServerHelloDone ->
+   network!client_server_key.Client.KeyExchange ->
+   network!client_server_key.Client.ChangeCipherSpec ->
+   network!client_server_key.Client.Finished ->
+   network?client_server_key.ServerChangeCipherSpec ->
+   network?client_server_key.ServerFinished ->
+   ClientConnected();
+
+ServerProc() = ServerNegotiate();
+ServerNegotiate() = 
+   network?x.Hello ->
+   network!ServerHello ->
+   network!ServerCertificate ->
+   network!ServerKeyExchange ->
+   network!ServerHelloDone ->
+   network?x.KeyExchange ->
+   network?x.ChangeCipherSpec ->
+   network?x.Finished ->
+   network!ServerChangeCipherSpec ->
+   network!ServerFinished ->
+   serverconnected{server_connects = x} ->
+   ServerConnected(x);
+
+ServerConnected(x) =
+   network!client_server_key.HelloRequest -> ServerReNegotiate(client_server_key);
+
+ServerReNegotiate(x) = 
+   network?x.y.Hello ->
+   network!x.ServerHello ->
+   network!x.ServerCertificate ->
+   network!x.ServerKeyExchange ->
+   network!x.ServerHelloDone ->
+   network?x.y.KeyExchange ->
+   network?x.y.ChangeCipherSpec ->
+   network?x.y.Finished ->
+   network!x.ServerChangeCipherSpec ->
+   network!x.ServerFinished ->
+   serverconnected{server_connects = y} ->
+   ServerConnected(y);
+
+aSystem = ClientProc() ||| ServerProc();
+
+TLS = ServerProc() ||| ClientProc();
+
+#define violation server_connects == Client && client_connects == Server;
+#assert TLS deadlockfree;
+#assert TLS reaches violation;
