@@ -124,11 +124,8 @@ namespace SslTcpClient
             {
                 serverCertificateName = args[1];
             }
-            do
-            {
                 SslTcpClient.RunClient(machineName, serverCertificateName);
-                System.Threading.Thread.Sleep(5000);
-            } while (true);
+            
             return 0;
         }
     }
