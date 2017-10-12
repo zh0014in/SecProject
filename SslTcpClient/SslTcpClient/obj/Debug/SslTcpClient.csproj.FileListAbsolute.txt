@@ -1,0 +1,21 @@
+c:/users/zzz/source/repos/SslTcpClient/SslTcpClient/bin/Debug/SslTcpClient.exe.config
+c:/users/zzz/source/repos/SslTcpClient/SslTcpClient/bin/Debug/SslTcpClient.exe
+c:/users/zzz/source/repos/SslTcpClient/SslTcpClient/bin/Debug/SslTcpClient.pdb
+c:/users/zzz/source/repos/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.csproj.CoreCompileInputs.cache
+c:/users/zzz/source/repos/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.exe
+c:/users/zzz/source/repos/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.pdb
+c:/users/zzz/source/repos/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.csprojResolveAssemblyReference.cache
+/Users/zhangmingmin/Dropbox/master/Security Project/SslTcpClient/SslTcpClient/bin/Debug/SslTcpClient.exe.config
+/Users/zhangmingmin/Dropbox/master/Security Project/SslTcpClient/SslTcpClient/bin/Debug/SslTcpClient.exe
+/Users/zhangmingmin/Dropbox/master/Security Project/SslTcpClient/SslTcpClient/bin/Debug/SslTcpClient.pdb
+/Users/zhangmingmin/Dropbox/master/Security Project/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.csprojResolveAssemblyReference.cache
+/Users/zhangmingmin/Dropbox/master/Security Project/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.csproj.CoreCompileInputs.cache
+/Users/zhangmingmin/Dropbox/master/Security Project/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.exe
+/Users/zhangmingmin/Dropbox/master/Security Project/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.pdb
+C:\Users\zzz\Dropbox\master\Security Project\SslTcpClient\SslTcpClient\bin\Debug\SslTcpClient.exe.config
+C:\Users\zzz\Dropbox\master\Security Project\SslTcpClient\SslTcpClient\bin\Debug\SslTcpClient.exe
+C:\Users\zzz\Dropbox\master\Security Project\SslTcpClient\SslTcpClient\bin\Debug\SslTcpClient.pdb
+C:\Users\zzz\Dropbox\master\Security Project\SslTcpClient\SslTcpClient\obj\Debug\SslTcpClient.csprojResolveAssemblyReference.cache
+C:\Users\zzz\Dropbox\master\Security Project\SslTcpClient\SslTcpClient\obj\Debug\SslTcpClient.csproj.CoreCompileInputs.cache
+C:\Users\zzz\Dropbox\master\Security Project\SslTcpClient\SslTcpClient\obj\Debug\SslTcpClient.exe
+C:\Users\zzz\Dropbox\master\Security Project\SslTcpClient\SslTcpClient\obj\Debug\SslTcpClient.pdb
