@@ -16,3 +16,12 @@ C:\Users\zzz\Dropbox\master\Security Project\SslTcpServer\SslTcpServer\obj\Debug
 C:\Users\zzz\Dropbox\master\Security Project\SslTcpServer\SslTcpServer\obj\Debug\SslTcpServer.csproj.CoreCompileInputs.cache
 C:\Users\zzz\Dropbox\master\Security Project\SslTcpServer\SslTcpServer\obj\Debug\SslTcpServer.exe
 C:\Users\zzz\Dropbox\master\Security Project\SslTcpServer\SslTcpServer\obj\Debug\SslTcpServer.pdb
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\bin\Debug\cert.cer
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\bin\Debug\ssl_cert.pfx
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\bin\Debug\SslTcpServer.exe.config
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\bin\Debug\SslTcpServer.exe
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\bin\Debug\SslTcpServer.pdb
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\obj\Debug\SslTcpServer.csprojResolveAssemblyReference.cache
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\obj\Debug\SslTcpServer.csproj.CoreCompileInputs.cache
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\obj\Debug\SslTcpServer.exe
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpServer\SslTcpServer\obj\Debug\SslTcpServer.pdb
