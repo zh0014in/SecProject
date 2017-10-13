@@ -121,6 +121,7 @@ namespace SslTcpClient
             {
                 serverCertificateName = args[1];
             }
+            Console.WriteLine("machine name: " + machineName + ", server certificate name: " + serverCertificateName);
                 SslTcpClient.RunClient(machineName, serverCertificateName);
             Console.Read();
             return 0;
