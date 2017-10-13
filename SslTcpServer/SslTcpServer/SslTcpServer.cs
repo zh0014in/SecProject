@@ -38,7 +38,7 @@ namespace SslTcpServer
             try
             {
                 sslStream.AuthenticateAsServer(serverCertificate,
-                    false, SslProtocols.Ssl3, true);
+                    false, SslProtocols.Tls, true);
                 // Display the properties and settings for the authenticated stream.
                 DisplaySecurityLevel(sslStream);
                 DisplaySecurityServices(sslStream);

@@ -122,7 +122,7 @@ namespace SslTcpClient
                 serverCertificateName = args[1];
             }
                 SslTcpClient.RunClient(machineName, serverCertificateName);
-            
+            Console.Read();
             return 0;
         }
     }
