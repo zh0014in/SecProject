@@ -26,3 +26,10 @@ C:/Users/zzz/Dropbox/master/Security Project/SslTcpClient/SslTcpClient/obj/Debug
 /Users/zhangmingmin/SecProject/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.csproj.CoreCompileInputs.cache
 /Users/zhangmingmin/SecProject/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.exe
 /Users/zhangmingmin/SecProject/SslTcpClient/SslTcpClient/obj/Debug/SslTcpClient.pdb
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpClient\SslTcpClient\obj\Debug\SslTcpClient.csprojResolveAssemblyReference.cache
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpClient\SslTcpClient\obj\Debug\SslTcpClient.csproj.CoreCompileInputs.cache
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpClient\SslTcpClient\obj\Debug\SslTcpClient.exe
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpClient\SslTcpClient\obj\Debug\SslTcpClient.pdb
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpClient\SslTcpClient\bin\Debug\SslTcpClient.exe.config
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpClient\SslTcpClient\bin\Debug\SslTcpClient.exe
+C:\Users\zzz\Documents\GitHub\SecProject\SslTcpClient\SslTcpClient\bin\Debug\SslTcpClient.pdb
