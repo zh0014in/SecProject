@@ -20,7 +20,7 @@ ClientNegotiate() =
    network!Client.ChangeCipherSpec ->
    network!Client.EncryptedhandshakeMessage ->
    network?ServerChangeCipherSpec ->
-   network?ServerFinished ->
+   network?ServerEncryptedhandshakeMessage ->
    clientconnected{client_connects = Server} ->
    ClientConnected();
    

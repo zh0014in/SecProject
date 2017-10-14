@@ -1,0 +1,178 @@
+﻿//=======================Model Details===========================
+enum{ServerHello,ServerCertificate,ServerKeyExchange,
+        ServerHelloDone,ServerChangeCipherSpec,ServerEncryptedhandshakeMessage,HelloRequest,
+        Certificate,KeyExchange,CertificateVerify,ChangeCipherSpec,EncryptedhandshakeMessage,Finished,Hello,
+        Nobody, Client, Server, Proxy, Attacker, HelloDone,ClientHello,ClientKeyExchange,ClientChangeCipherSpec,
+        ClientEncryptedhandshakeMessage, 
+        client_proxy_key, client_attacker_key, proxy_server_key, attacker_server_key};
+
+channel networkClient 0;
+channel networkServer 0;
+
+var client_connects = Nobody;
+var server_connects = Nobody;
+
+ClientProc() = ClientNegotiate();
+// Client connects to x, which is Proxy or Attacker
+ClientNegotiate() = 
+   networkClient!ClientHello ->
+   networkClient?x.Hello ->
+   networkClient?x.Certificate ->
+   networkClient?x.HelloDone ->
+   networkClient!ClientKeyExchange ->
+   networkClient!ClientChangeCipherSpec ->
+   networkClient!ClientEncryptedhandshakeMessage ->
+   networkClient?x.ChangeCipherSpec ->
+   networkClient?x.EncryptedhandshakeMessage ->
+   clientconnected{client_connects = x} ->
+   ClientConnected(x);
+   
+ClientConnected(x) =
+	if(x == Proxy)
+	{
+ 		networkClient?client_proxy_key.HelloRequest -> ClientReNegotiate(client_proxy_key)
+ 	}
+ 	else{
+ 		networkClient?client_attacker_key.HelloRequest -> ClientReNegotiate(client_attacker_key)
+ 	};
+
+ClientReNegotiate(key) = 
+   networkClient!key.ClientHello ->
+   networkClient?key.x.Hello ->
+   networkClient?key.x.ChangeCipherSpec ->
+   networkClient?key.x.EncryptedhandshakeMessage ->
+   networkClient!key.ClientChangeCipherSpec ->
+   networkClient!key.ClientEncryptedhandshakeMessage ->
+   ClientConnected(x);
+
+ServerProc() = ServerNegotiate();
+// Server negotiate with Proxy or Attacker
+ServerNegotiate() = 
+   networkServer?x.Hello ->
+   networkServer!ServerHello ->
+   networkServer!ServerCertificate ->
+   networkServer!ServerHelloDone ->
+   networkServer?x.KeyExchange ->
+   networkServer?x.ChangeCipherSpec ->
+   networkServer?x.EncryptedhandshakeMessage ->
+   networkServer!ServerChangeCipherSpec ->
+   networkServer!ServerEncryptedhandshakeMessage ->
+   serverconnected{server_connects = x} ->
+   ServerConnected(x);
+
+ServerConnected(x) =
+	if(x == Proxy)
+	{
+	   networkServer!proxy_server_key.HelloRequest -> ServerReNegotiate(proxy_server_key)
+   }else{
+   		networkServer!attacker_server_key.HelloRequest -> ServerReNegotiate(attacker_server_key)
+   };
+
+ServerReNegotiate(key) = 
+   networkServer?key.y.Hello ->
+   networkServer!key.ServerHello ->
+   networkServer!key.ServerChangeCipherSpec ->
+   networkServer!key.ServerEncryptedhandshakeMessage ->
+   networkServer?key.y.ChangeCipherSpec ->
+   networkServer?key.y.EncryptedhandshakeMessage ->
+   serverconnected{server_connects = y} ->
+   ServerConnected(y);
+   
+ AttackerProc() = AttackerNegotiate();
+ AttackerNegotiate() =
+ 	networkClient?ClientHello ->
+ 	networkClient!Attacker.Hello ->
+ 	networkClient!Attacker.Certificate ->
+ 	networkClient!Attacker.HelloDone ->
+ 	networkClient?ClientKeyExchange ->
+ 	networkClient?ClientChangeCipherSpec ->
+ 	networkClient?ClientEncryptedhandshakeMessage ->
+ 	networkClient!Attacker.ChangeCipherSpec ->
+ 	networkClient!Attacker.EncryptedhandshakeMessage ->
+ 	networkServer!Attacker.Hello ->
+ 	networkServer?ServerHello ->
+ 	networkServer?ServerCertificate ->
+ 	networkServer?ServerHelloDone ->
+ 	networkServer!Attacker.KeyExchange ->
+ 	networkServer!Attacker.ChangeCipherSpec ->
+ 	networkServer!Attacker.EncryptedhandshakeMessage ->
+ 	networkServer?ServerChangeCipherSpec ->
+ 	networkServer?ServerEncryptedhandshakeMessage ->
+ 	AttackerConnected();
+ 
+ AttackerConnected() = 
+ networkServer?attacker_server_key.HelloRequest -> 
+ networkClient!client_attacker_key.HelloRequest ->
+ AttackerReNegotiate();
+ 
+ AttackerReNegotiate() = 
+ networkClient?client_attacker_key.ClientHello ->
+ networkClient!client_attacker_key.Attacker.Hello ->
+ networkClient!client_attacker_key.Attacker.ChangeCipherSpec ->
+ networkClient!client_attacker_key.Attacker.EncryptedhandshakeMessage ->
+ networkClient?client_attacker_key.ClientChangeCipherSpec ->
+ networkClient?client_attacker_key.ClientEncryptedhandshakeMessage ->
+ networkServer!attacker_server_key.Attacker.Hello ->
+ networkServer?attacker_server_key.ServerHello ->
+ networkServer?attacker_server_key.ServerChangeCipherSpec ->
+ networkServer?attacker_server_key.ServerEncryptedhandshakeMessage ->
+ networkServer!attacker_server_key.Attacker.ChangeCipherSpec ->
+ networkServer!attacker_server_key.Attacker.EncryptedhandshakeMessage ->
+ AttackerConnected();
+ 
+  ProxyProc() = ProxyNegotiate();
+ ProxyNegotiate() =
+ 	networkClient?ClientHello ->
+ 	networkServer!Proxy.Hello ->
+ 	networkServer?ServerHello ->
+ 	networkServer?ServerCertificate ->
+ 	networkServer?ServerHelloDone ->
+ 	networkClient!Proxy.Hello ->
+ 	networkClient!Proxy.Certificate ->
+ 	networkClient!Proxy.HelloDone ->
+ 	networkClient?ClientKeyExchange ->
+ 	networkClient?ClientChangeCipherSpec ->
+ 	networkClient?ClientEncryptedhandshakeMessage ->
+ 	networkServer!Proxy.KeyExchange ->
+ 	networkServer!Proxy.ChangeCipherSpec ->
+ 	networkServer!Proxy.EncryptedhandshakeMessage ->
+ 	networkServer?ServerChangeCipherSpec ->
+ 	networkServer?ServerEncryptedhandshakeMessage ->
+ 	networkClient!Proxy.ChangeCipherSpec ->
+ 	networkClient!Proxy.EncryptedhandshakeMessage ->
+ 	ProxyConnected();
+ 
+ ProxyConnected() = 
+ networkServer?proxy_server_key.HelloRequest -> 
+ networkClient!client_proxy_key.HelloRequest ->
+ ProxyReNegotiate();
+ 
+ ProxyReNegotiate() = 
+ networkClient?client_proxy_key.ClientHello ->
+ networkServer!proxy_server_key.Proxy.Hello ->
+ networkServer?proxy_server_key.ServerHello ->
+ networkServer?proxy_server_key.ServerChangeCipherSpec ->
+ networkServer?proxy_server_key.ServerEncryptedhandshakeMessage ->
+ networkClient!client_proxy_key.Proxy.Hello ->
+ networkClient!client_proxy_key.Proxy.ChangeCipherSpec ->
+ networkClient!client_proxy_key.Proxy.EncryptedhandshakeMessage ->
+ networkClient?client_proxy_key.ClientChangeCipherSpec ->
+ networkClient?client_proxy_key.ClientEncryptedhandshakeMessage ->
+ networkServer!proxy_server_key.Proxy.ChangeCipherSpec ->
+ networkServer!proxy_server_key.Proxy.EncryptedhandshakeMessage ->
+ ProxyConnected();
+
+aSystem = ClientProc() ||| ProxyProc() ||| ServerProc();
+bSystem = ClientProc() ||| AttackerProc() ||| ServerProc();
+
+TLS = ClientProc() ||| ProxyProc() ||| ServerProc();
+
+#define violation server_connects == Proxy && client_connects == Proxy;
+#assert TLS deadlockfree;
+#assert TLS reaches violation;
+
+#define attackerSuccess server_connects == Attacker && client_connects == Attacker;
+#assert bSystem deadlockfree;
+#assert bSystem reaches attackerSuccess;
+
+#assert aSystem refines bSystem;
