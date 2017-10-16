@@ -79,7 +79,7 @@ void ProcessPacket(unsigned char* buffer, int size)
     {
         case 1:  //ICMP Protocol
             ++icmp;
-            print_icmp_packet( buffer , size);
+            //print_icmp_packet( buffer , size);
             break;
          
         case 2:  //IGMP Protocol
@@ -93,7 +93,7 @@ void ProcessPacket(unsigned char* buffer, int size)
          
         case 17: //UDP Protocol
             ++udp;
-            print_udp_packet(buffer , size);
+            //print_udp_packet(buffer , size);
             break;
          
         default: //Some Other Protocol like ARP etc.
@@ -193,6 +193,26 @@ void print_tcp_packet(unsigned char* Buffer, int Size)
     PrintData(Buffer + header_size , Size - header_size );
                          
     fprintf(logfile , "\n###########################################################");
+}
+
+void print_tcp_packet_meta(unsigned char* Buffer, int Size)
+{
+    unsigned short iphdrlen;
+     
+    struct iphdr *iph = (struct iphdr *)( Buffer  + sizeof(struct ethhdr) );
+    iphdrlen = iph->ihl*4;
+     
+    struct tcphdr *tcph=(struct tcphdr*)(Buffer + iphdrlen + sizeof(struct ethhdr));
+             
+    int header_size =  sizeof(struct ethhdr) + iphdrlen + tcph->doff*4;
+     
+    print_ip_header(Buffer,Size);
+         
+    fprintf(logfile , "%u",ntohs(tcph->source));
+    fprintf(logfile , "%u",ntohs(tcph->dest));
+    fprintf(logfile , "%d" ,(unsigned int)Size);
+        
+    fprintf(logfile , "\n");
 }
  
 void print_udp_packet(unsigned char *Buffer , int Size)
