@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{C90277A4-D045-43AD-92A4-490B092FE5C7}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="SslTcpClient/SslTcpClient.cs">
     <Files>
-      <File FileName="SslTcpClient/SslTcpClient.cs" Line="17" Column="9" />
+      <File FileName="SslTcpClient/SslTcpClient.cs" Line="11" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
