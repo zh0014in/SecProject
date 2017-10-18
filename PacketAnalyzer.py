@@ -7,10 +7,9 @@ print (fitz.__doc__)
 
 ClientHello = "Client Hello"
 ServerHello = "Server Hello"
+ServerHelloDone = "Server Hello Done"
 ClientChangeCipherSpec = "Change Cipher Spec"
-ServerAddress = "192.168.0.111"
-ClientAddress = "192.168.0.168"
-
+SslPort = "443"
 
 def parseFile(fileName, output):
     print("opening file " + fileName)
@@ -26,8 +25,8 @@ def parseFile(fileName, output):
             lines = buf.readlines()
             # remove first two lines and the last two lines
             lines = lines[2:-1] 
-            # filter out only server/client messages
-            lines = [l for l in lines if ClientAddress in l and ServerAddress in l]
+            # filter out only ssl packets
+            lines = [l for l in lines if SslPort in l]
             for line in lines:
                 split = re.split(r'\s{2,}',line)
                 split.append( float(split[0])-ts)
