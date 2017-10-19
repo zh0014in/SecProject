@@ -1,11 +1,8 @@
 import numpy as np
 import pandas as pd
-from numpy.core.defchararray import index
-from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
-from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
 
 train = pd.read_csv('../packets/train', sep=",")
@@ -16,10 +13,6 @@ y = data_train[:, 8]
 
 print X
 print y
-
-# clf = SVC(C=100, cache_size=2000, probability=True)
-# scores = cross_val_score(clf, X, y)
-# print scores.mean()
 
 # Split the dataset in two equal parts
 X_train, X_test, y_train, y_test = train_test_split(

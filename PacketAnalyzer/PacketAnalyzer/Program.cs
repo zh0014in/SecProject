@@ -29,7 +29,9 @@ namespace PacketAnalyzer
             else if (choice.Equals("2"))
             {
                 var result = pp.DecodeSessions("result_svm.csv");
-                File.WriteAllLines(@"sessions", result.Select(x => x.ToString()));
+                File.WriteAllLines(@"sessions", result.Select(x => "=====Session start=====" + Environment.NewLine
+                + x.ToString() + Environment.NewLine 
+                + "=====Session end=====" + Environment.NewLine));
             }
             Console.WriteLine("Done");
             Console.Read();
