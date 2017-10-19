@@ -1,11 +1,5 @@
 import numpy as np
 import pandas as pd
-from numpy.core.defchararray import index
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import classification_report
-from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
 
 train = pd.read_csv('../packets/train', sep=",")
@@ -20,13 +14,12 @@ print X_train
 print y_train
 
 X_test = data_test[:, 5:8]
-X_check = data_test[:, 5:9]
 
 clf = SVC(C=400, cache_size=2000, probability=True, gamma=0.01)
 clf.fit(X_train, y_train)
 
 result = clf.predict(X_test)
-result = np.column_stack([X_check, result])
+result = np.column_stack([data_test, result])
 
 print result
 thefile = open('result_svm.csv', 'w')

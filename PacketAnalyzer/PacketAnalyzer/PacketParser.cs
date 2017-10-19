@@ -16,6 +16,13 @@ namespace PacketAnalyzer
         private static double InterArrivalTimeout = 2;
         public List<Packet> Parse(string fileName)
         {
+            var result = DecodeRawPackets(fileName);
+            DecodeInterArrivalTime(result);
+            return result;
+        }
+
+        private List<Packet> DecodeRawPackets(string fileName)
+        {
             var result = new List<Packet>();
             using (var reader = new StreamReader(fileName))
             {
@@ -56,10 +63,8 @@ namespace PacketAnalyzer
                     result.Add(packet);
                 }
             }
-            DecodeInterArrivalTime(result);
             return result;
         }
-
         private void DecodeInterArrivalTime(List<Packet> packets)
         {
             List<Packet> tempClientHelloPackets = new List<Packet>(); // temperory clieng hello packets for server hello done search
@@ -127,6 +132,84 @@ namespace PacketAnalyzer
                 //    }
                 //}
             }
+        }
+
+        public List<Session> DecodeSessions(string fileName)
+        {
+            var packets = DecodeSessionPackets(fileName);
+            var result = new List<Session>();
+            for(var i = 0; i < packets.Count; i++)
+            {
+                var packet = packets[i];
+                if(packet.Type == HandshakeType.Finished)
+                {
+                    var clientKeyExchange = packets.Take(i).Where(x => x.Source == packet.Destination
+                    && x.Destination == packet.Source
+                    && x.Type == HandshakeType.ClientKeyExchange
+                    && packet.Time - x.Time < InterArrivalTimeout)
+                    .OrderByDescending(x => x.Time)
+                    .FirstOrDefault();
+                    if(clientKeyExchange != null)
+                    {
+                        var serverHelloDone = packets.Take(i).Where(x => x.Time < clientKeyExchange.Time
+                        && x.Source == clientKeyExchange.Destination
+                        && x.Destination == clientKeyExchange.Source
+                        && x.Type == HandshakeType.ServerHelloDone
+                        && clientKeyExchange.Time - x.Time < InterArrivalTimeout)
+                        .OrderByDescending(x => x.Time)
+                        .FirstOrDefault();
+                        if(serverHelloDone != null)
+                        {
+                            var clientHello = packets.Take(i).Where(x => x.Time < serverHelloDone.Time
+                            && x.Source == serverHelloDone.Destination
+                            && x.Destination == serverHelloDone.Source
+                            && x.Type == HandshakeType.ClientHello
+                            && serverHelloDone.Time - x.Time < InterArrivalTimeout)
+                            .OrderByDescending(x => x.Time)
+                            .FirstOrDefault();
+                            if(clientHello != null)
+                            {
+                                // a session is found
+                                result.Add(new Session
+                                {
+                                    ClientHello = clientHello,
+                                    ServerHello = serverHelloDone,
+                                    ClientKeyExchange = clientKeyExchange,
+                                    Finished = packet
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        private List<Packet> DecodeSessionPackets(string fileName)
+        {
+            var result = new List<Packet>();
+            using (var reader = new StreamReader(fileName))
+            {
+                reader.ReadLine(); // skip header
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+                    var packet = new Packet
+                    {
+                        Time = double.Parse(values[0].Trim('\"')),
+                        Source = values[1].Trim('\"'),
+                        Destination = values[2].Trim('\"'),
+                        SrcPort = int.Parse(values[3].Trim('\"')),
+                        DestPort = int.Parse(values[4].Trim('\"')),
+                        Length = int.Parse(values[5].Trim('\"')),
+                        Info = values[9].Trim('\"')
+                    };
+                    packet.Type = (HandshakeType)Enum.Parse(typeof(HandshakeType), packet.Info);
+                    result.Add(packet);
+                }
+            }
+            return result;
         }
     }
 }

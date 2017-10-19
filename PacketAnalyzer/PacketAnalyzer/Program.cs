@@ -15,13 +15,22 @@ namespace PacketAnalyzer
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(@"1. Parse raw packets for hidden features.
+2. Generate ssl sessions from packets.");
+            var choice = Console.ReadLine();
             PacketParser pp = new PacketParser();
-            var result = pp.Parse("sample");
-            //File.WriteAllLines(@"train", new string[] { "Time,Source,Destination,SrcPort,DestPort,Length,Info" });
-            File.WriteAllLines(@"train", result.Select(x => x.ToString()));
-            result = pp.Parse("test");
-            //File.WriteAllLines(@"test", new string[] { "Time,Source,Destination,SrcPort,DestPort,Length,Info" });
-            File.WriteAllLines(@"test", result.Select(x => x.ToString()));
+            if (choice.Equals("1"))
+            {
+                var result = pp.Parse("sample");
+                File.WriteAllLines(@"train", result.Select(x => x.ToString()));
+                result = pp.Parse("test");
+                File.WriteAllLines(@"test", result.Select(x => x.ToString()));
+            }
+            else if (choice.Equals("2"))
+            {
+                var result = pp.DecodeSessions("result_svm.csv");
+                File.WriteAllLines(@"sessions", result.Select(x => x.ToString()));
+            }
             Console.WriteLine("Done");
             Console.Read();
         }
