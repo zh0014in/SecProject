@@ -24,7 +24,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-2, 1e-3, 1e-4],
                      'C': [300, 400, 500, 700, 800, 900]}]
 
-scores = ['recall']
+scores = ['recall', 'precision']
 
 for score in scores:
     print("# Tuning hyper-parameters for %s" % score)

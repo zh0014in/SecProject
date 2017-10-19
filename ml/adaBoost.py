@@ -12,4 +12,4 @@ y = data_train[:, 7]
 
 clf = AdaBoostClassifier(n_estimators=100)
 scores = cross_val_score(clf, X, y)
-scores.mean()
+print scores.mean()
