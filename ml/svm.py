@@ -5,6 +5,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
 
 train = pd.read_csv('../packets/train', sep=",")
@@ -16,12 +17,16 @@ y = data_train[:, 7]
 
 print X
 
+# clf = SVC(C=100, cache_size=2000, probability=True)
+# scores = cross_val_score(clf, X, y)
+# print scores.mean()
+
 # Split the dataset in two equal parts
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.5, random_state=0)
 
 # Set the parameters by cross-validation
-tuned_parameters = [{'kernel': ['rbf'], 'gamma': [1e-2, 1e-3, 1e-4],
+tuned_parameters = [{'kernel': [ 'linear', 'poly', 'rbf', 'sigmoid', 'precomputed' ], 'gamma': [1e-2, 1e-3, 1e-4],
                      'C': [300, 400, 500, 700, 800, 900]}]
 
 scores = ['recall', 'precision']
