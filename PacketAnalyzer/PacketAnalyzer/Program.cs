@@ -18,6 +18,7 @@ namespace PacketAnalyzer
             PacketParser pp = new PacketParser();
             var result = pp.Parse("sample");
             File.WriteAllLines(@"test", result.Select(x => x.ToString()));
+            Console.WriteLine("Done");
             Console.Read();
         }
 

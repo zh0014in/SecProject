@@ -12,8 +12,8 @@ train = pd.read_csv('../packets/train', sep=",")
 data_train = np.array(train)
 
 i_train = data_train[:, 0]
-X = data_train[:, 5:6]
-y = data_train[:, 7]
+X = data_train[:, 5:7]
+y = data_train[:, 8]
 
 print X
 
@@ -26,7 +26,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.5, random_state=0)
 
 # Set the parameters by cross-validation
-tuned_parameters = [{'kernel': [ 'linear', 'poly', 'rbf', 'sigmoid', 'precomputed' ], 'gamma': [1e-2, 1e-3, 1e-4],
+tuned_parameters = [{'kernel': [ 'rbf'], 'gamma': [1e-2, 1e-3, 1e-4],
                      'C': [300, 400, 500, 700, 800, 900]}]
 
 scores = ['recall', 'precision']
