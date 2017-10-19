@@ -9,54 +9,27 @@ from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
 
 train = pd.read_csv('../packets/train', sep=",")
+test = pd.read_csv('../packets/test', sep=",")
 data_train = np.array(train)
+data_test = np.array(test)
 
-i_train = data_train[:, 0]
-X = data_train[:, 5:7]
-y = data_train[:, 8]
+X_train = data_train[:, 5:8]
+y_train = data_train[:, 8]
 
-print X
+print X_train
+print y_train
 
-# clf = SVC(C=100, cache_size=2000, probability=True)
-# scores = cross_val_score(clf, X, y)
-# print scores.mean()
+X_test = data_test[:, 5:8]
+X_check = data_test[:, 5:9]
 
-# Split the dataset in two equal parts
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.5, random_state=0)
+clf = SVC(C=400, cache_size=2000, probability=True, gamma=0.01)
+clf.fit(X_train, y_train)
 
-# Set the parameters by cross-validation
-tuned_parameters = [{'kernel': [ 'rbf'], 'gamma': [1e-2, 1e-3, 1e-4],
-                     'C': [300, 400, 500, 700, 800, 900]}]
+result = clf.predict(X_test)
+result = np.column_stack([X_check, result])
 
-scores = ['recall', 'precision']
-
-for score in scores:
-    print("# Tuning hyper-parameters for %s" % score)
-    print()
-
-    clf = GridSearchCV(SVC(C=100, cache_size=2000, probability=True), tuned_parameters, cv=5,
-                       scoring='%s_macro' % score, n_jobs=2)
-    clf.fit(X_train, y_train)
-
-    print("Best parameters set found on development set:")
-    print()
-    print(clf.best_params_)
-    print()
-    print("Grid scores on development set:")
-    print()
-    means = clf.cv_results_['mean_test_score']
-    stds = clf.cv_results_['std_test_score']
-    for mean, std, params in zip(means, stds, clf.cv_results_['params']):
-        print("%0.3f (+/-%0.03f) for %r"
-                % (mean, std * 2, params))
-    print()
-
-    print("Detailed classification report:")
-    print()
-    print("The model is trained on the full development set.")
-    print("The scores are computed on the full evaluation set.")
-    print()
-    y_true, y_pred = y_test, clf.predict(X_test)
-    print(classification_report(y_true, y_pred))
-    print()
+print result
+thefile = open('result_svm.csv', 'w')
+thefile.write("Length,PreviousLength,InterArrivalTime,Type,Predict\n")
+for item in result:
+    thefile.write("%s\n" % ",".join(str(x) for x in item))
