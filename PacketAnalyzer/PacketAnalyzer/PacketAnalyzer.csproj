@@ -69,12 +69,6 @@
     <None Include="sample">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="sample.pcap">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="sample.pcapng">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="test">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

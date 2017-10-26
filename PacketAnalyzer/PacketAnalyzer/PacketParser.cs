@@ -67,9 +67,6 @@ namespace PacketAnalyzer
         }
         private void DecodeInterArrivalTime(List<Packet> packets)
         {
-            List<Packet> tempClientHelloPackets = new List<Packet>(); // temperory clieng hello packets for server hello done search
-            List<Packet> tempServerHelloDonePackets = new List<Packet>(); // temperory server hello done packets for client key exchange search
-            List<Packet> tempClientKeyExchangePackets = new List<Packet>(); // temperory client key exchange packets for finish search
             Packet packet, previousPacket;
             for (var i = 0; i < packets.Count; i++)
             {
@@ -85,52 +82,6 @@ namespace PacketAnalyzer
                     packet.InterArrivalTime = packet.Time - previousPacket.Time;
                     packet.PreviousLength = previousPacket.Length;
                 }
-                //if(packet.Type == HandshakeType.ClientHello)
-                //{
-                //    packet.InterArrivalTime = 0;
-                //    tempClientHelloPackets.Add(packet);
-                //}
-                //else if (packet.Type == HandshakeType.ServerHelloDone)
-                //{
-                //    // look for client hello
-                //    var clientHello = tempClientHelloPackets.Where(x => x.Source == packet.Destination
-                //    && x.Destination == packet.Source
-                //    && packet.Time - x.Time <= InterArrivalTimeout)
-                //    .OrderByDescending(x => x.Time)
-                //    .FirstOrDefault();
-                //    if (clientHello != null)
-                //    {
-                //        packet.InterArrivalTime = packet.Time - clientHello.Time;
-                //        tempServerHelloDonePackets.Add(packet);
-                //    }
-                //}
-                //else if (packet.Type == HandshakeType.ClientKeyExchange)
-                //{
-                //    // look for server hello done
-                //    var serverHelloDone = tempServerHelloDonePackets.Where(x => x.Source == packet.Destination
-                //    && x.Destination == packet.Source
-                //    && packet.Time - x.Time <= InterArrivalTimeout)
-                //    .OrderByDescending(x => x.Time)
-                //    .FirstOrDefault();
-                //    if(serverHelloDone != null)
-                //    {
-                //        packet.InterArrivalTime = packet.Time - serverHelloDone.Time;
-                //        tempClientKeyExchangePackets.Add(packet);
-                //    }
-                //}
-                //else if(packet.Type == HandshakeType.Finished)
-                //{
-                //    // look for client key exchange
-                //    var clientKeyExchange = tempClientKeyExchangePackets.Where(x => x.Source == packet.Destination
-                //    && x.Destination == packet.Source
-                //    && packet.Time - x.Time <= InterArrivalTimeout)
-                //    .OrderByDescending(x => x.Time)
-                //    .FirstOrDefault();
-                //    if(clientKeyExchange != null)
-                //    {
-                //        packet.InterArrivalTime = packet.Time - clientKeyExchange.Time;
-                //    }
-                //}
             }
         }
 
