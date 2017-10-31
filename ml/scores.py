@@ -34,6 +34,3 @@ print scores.mean()
 clf = neighbors.KNeighborsClassifier(15, weights='uniform')
 scores = cross_val_score(clf, X, y)
 print scores.mean()
-# y_pred = gnb.fit(X, y).predict(X)
-# print("Number of mislabeled points out of a total %d points : %d"
-#       % (X.shape[0],(y != y_pred).sum()))

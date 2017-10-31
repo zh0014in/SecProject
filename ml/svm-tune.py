@@ -20,7 +20,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # Set the parameters by cross-validation
 tuned_parameters = [{'kernel': [ 'rbf'], 'gamma': [1e-2, 1e-3, 1e-4],
-                     'C': [300, 400, 500, 700, 800, 900]}]
+                     'C': [200, 300]}]
 
 scores = ['recall', 'precision']
 

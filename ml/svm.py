@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 from sklearn.svm import SVC
+import os.path
+from sklearn.externals import joblib
 
 train = pd.read_csv('../packets/train', sep=",")
 test = pd.read_csv('../packets/test', sep=",")
@@ -15,8 +17,14 @@ print y_train
 
 X_test = data_test[:, 5:8]
 
-clf = SVC(C=400, cache_size=2000, probability=True, gamma=0.01)
-clf.fit(X_train, y_train)
+if os.path.isfile('svm.pkl'):
+    clf = joblib.load('svm.pkl')
+else:
+    clf = SVC(C=400, cache_size=2000, probability=True, gamma=0.01)
+    clf.fit(X_train, y_train)
+
+    # store trained model
+    joblib.dump(clf, 'svm.pkl')
 
 result = clf.predict(X_test)
 result = np.column_stack([data_test, result])

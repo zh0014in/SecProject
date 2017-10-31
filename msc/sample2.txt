@@ -1,0 +1,9 @@
+A -> B : ClientHello
+B -> A : ServerHello
+B -> A : ServerCertificate
+B -> A : ServerHelloDone
+A -> B : ClientKeyExchange
+A -> B : ClientChangeCipherSpec
+A -> B : ClientEncryptedhandshakeMessage
+B -> A : ServerChangeCipherSpec
+B -> A : ServerEncryptedhandshakeMessage
