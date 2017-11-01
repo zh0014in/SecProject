@@ -35,6 +35,9 @@ namespace PacketAnalyzer
                 var session = result.First();
                 var msc = pp.SessionToMSC(session);
                 File.WriteAllText($"msc-{session.ClientHello.Source}-{session.ClientHello.Destination}.txt", msc);
+
+                var csp = pp.MSCToCSP(msc);
+                File.WriteAllText($"csp-{session.ClientHello.Source}-{session.ClientHello.Destination}.csp", csp);
             }
             Console.WriteLine("Done");
             Console.Read();

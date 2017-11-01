@@ -14,6 +14,9 @@ namespace PacketAnalyzer
         private static string ClientKeyExchange = "Client Key Exchange";
         private static string ServerChangeCipherSpec = "Change Cipher Spec";
         private static double InterArrivalTimeout = 2;
+        private const string ACTIONSPLITTER = ":";
+        private const string PARTYSPLITTER = "->";
+
         public List<Packet> Parse(string fileName)
         {
             var result = DecodeRawPackets(fileName);
@@ -172,7 +175,96 @@ namespace PacketAnalyzer
         }
 
         public string MSCToCSP(string input){
-            return "";
+            StringReader strReader = new StringReader(input);
+            var lines = new List<string>();
+            while (true)
+            {
+                var aLine = strReader.ReadLine();
+                if (aLine != null && !string.IsNullOrWhiteSpace(aLine) 
+                    && aLine.Contains(ACTIONSPLITTER)
+                    && aLine.Contains(PARTYSPLITTER))
+                {
+                    lines.Add(aLine);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            var parties = DecodeParties(lines);
+            var actions = DecodeActions(lines);
+            var result = "";
+            result += GenerateEnums(parties, actions);
+            result += "channel network 0;" + Environment.NewLine;
+            result += GenerateProcesses(lines, parties);
+            return result;
+        }
+
+        private List<string> DecodeParties(List<string> lines){
+            var result = new List<string>();
+            foreach(var line in lines){
+                var parties = line.Split(new string[]{ACTIONSPLITTER}, StringSplitOptions.None)
+                                  .First().Split(new string[]{PARTYSPLITTER}, StringSplitOptions.None);
+                foreach(var party in parties){
+                    if(result.Contains(party.Trim())){
+                        continue;
+                    }
+                    result.Add(party.Trim());
+                }
+            }
+            return result;
+        }
+
+        private List<string> DecodeActions(List<string> lines){
+            var result = new List<string>();
+            foreach(var line in lines){
+                var action = line.Split(new string[] { ACTIONSPLITTER }, StringSplitOptions.None)
+                                  .Skip(1)
+                                  .First().Trim();
+                result.Add(action);
+            }
+            return result;
+        }
+
+        private string GenerateEnums(List<string> parties, List<string> actions){
+            var result = "enum{";
+            foreach(var party in parties){
+                result += party + ",";
+            }
+            foreach(var action in actions){
+                result += action + ",";
+            }
+            result = result.Substring(0, result.Length - 1);
+            result += "};" + Environment.NewLine;
+            return result;
+        }
+
+        private string GenerateProcesses(List<string> lines, List<string> parties){
+            Dictionary<string, string> processes = new Dictionary<string, string>();
+            foreach(var party in parties){
+                processes[party] = $"Process{party}() = {Environment.NewLine}";
+            }
+            foreach(var line in lines){
+                var p = line.Split(new string[] { ACTIONSPLITTER }, StringSplitOptions.None)
+                                  .First().Split(new string[] { PARTYSPLITTER }, StringSplitOptions.None);
+                var action = line.Split(new string[] { ACTIONSPLITTER }, StringSplitOptions.None)
+                                  .Skip(1)
+                                  .First().Trim();
+                var from = p[0];
+                var to = p[1];
+                foreach(var party in parties){
+                    if (party != from){
+                        processes[party] += $"network?{action} -> {Environment.NewLine}";
+                    }else{
+                        processes[party] += $"network!{action} -> {Environment.NewLine}";
+                    }
+                }
+            }
+            var result = "";
+            foreach(var process in processes){
+                result += process.Value + "Skip;" + Environment.NewLine;
+            }
+            return result;
         }
     }
 }
