@@ -266,7 +266,7 @@ namespace PacketAnalyzer
             }
             result += "TLS = ";
             foreach(var party in parties){
-                result += party + "() ||| ";
+                result += "Process" + party + "() ||| ";
             }
             result = result.Substring(0, result.Length - 5) + ";" + Environment.NewLine;
             result += "#assert TLS deadlockfree;";
