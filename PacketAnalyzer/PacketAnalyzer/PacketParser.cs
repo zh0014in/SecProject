@@ -162,5 +162,17 @@ namespace PacketAnalyzer
             }
             return result;
         }
+
+        public string SessionToMSC(Session session){
+            var result = session.ClientHello.ToMSC()
+                                + session.ServerHello.ToMSC()
+                                + session.ClientKeyExchange.ToMSC()
+                                + session.Finished.ToMSC();
+            return result;
+        }
+
+        public string MSCToCSP(string input){
+            return "";
+        }
     }
 }

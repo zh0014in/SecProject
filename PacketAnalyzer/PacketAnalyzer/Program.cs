@@ -16,7 +16,7 @@ namespace PacketAnalyzer
         static void Main(string[] args)
         {
             Console.WriteLine(@"1. Parse raw packets for hidden features.
-2. Generate ssl sessions from packets.");
+2. Generate ssl sessions, MSC and CSP from packets.");
             var choice = Console.ReadLine();
             PacketParser pp = new PacketParser();
             if (choice.Equals("1"))
@@ -32,6 +32,9 @@ namespace PacketAnalyzer
                 File.WriteAllLines(@"sessions", result.Select(x => "=====Session start=====" + Environment.NewLine
                 + x.ToString() + Environment.NewLine 
                 + "=====Session end=====" + Environment.NewLine));
+                var session = result.First();
+                var msc = pp.SessionToMSC(session);
+                File.WriteAllText($"msc-{session.ClientHello.Source}-{session.ClientHello.Destination}.txt", msc);
             }
             Console.WriteLine("Done");
             Console.Read();
