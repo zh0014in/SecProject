@@ -194,8 +194,8 @@ namespace PacketAnalyzer
             var parties = DecodeParties(lines);
             var actions = DecodeActions(lines);
             var result = "";
-            result += GenerateEnums(parties, actions);
-            result += "channel network 0;" + Environment.NewLine;
+            result += GenerateEnums(parties, actions) + Environment.NewLine;
+            result += "channel network 0;" + Environment.NewLine + Environment.NewLine;
             result += GenerateProcesses(lines, parties);
             return result;
         }
@@ -269,7 +269,7 @@ namespace PacketAnalyzer
                 result += party + "() ||| ";
             }
             result = result.Substring(0, result.Length - 5) + ";" + Environment.NewLine;
-            result += "#assert TLS deadlockfree";
+            result += "#assert TLS deadlockfree;";
             return result;
         }
     }
