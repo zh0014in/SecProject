@@ -250,8 +250,8 @@ namespace PacketAnalyzer
                 var action = line.Split(new string[] { ACTIONSPLITTER }, StringSplitOptions.None)
                                   .Skip(1)
                                   .First().Trim();
-                var from = p[0];
-                var to = p[1];
+                var from = p[0].Trim();
+                var to = p[1].Trim();
                 foreach(var party in parties){
                     if (party != from){
                         processes[party] += $"network?{action} -> {Environment.NewLine}";
@@ -264,6 +264,12 @@ namespace PacketAnalyzer
             foreach(var process in processes){
                 result += process.Value + "Skip;" + Environment.NewLine;
             }
+            result += "TLS = ";
+            foreach(var party in parties){
+                result += party + " ||| ";
+            }
+            result = result.Substring(0, result.Length - 5) + Environment.NewLine;
+            result += "#assert TLS deadlockfree";
             return result;
         }
     }
