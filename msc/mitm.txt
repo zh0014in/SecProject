@@ -1,0 +1,24 @@
+# Fictional client-server protocol
+msc {
+ arcgradient = 5;
+
+ a [label="Client"],c [label="Attacker"],b [label="Server"];
+
+ a->c [label="Client Hello"];
+ a<-c [label="Server Hello,\n Certificate,\n Server Key Exchange,\n Server Hello Done"];
+ |||;
+ a->c [label="Client Key Exchange,\n Change Cipher Spec,\n Encrypted Handshake Message"];
+ |||;
+ a<-c [label="Change Cipher Spec,\n Encrypted Handshake Message"];
+ |||;
+ c->b [label="Client Hello"];
+ c<-b [label="Server Hello,\n Certificate,\n Server Key Exchange,\n Server Hello Done"];
+ |||;
+ c->b [label="Client Key Exchange,\n Change Cipher Spec,\n Encrypted Handshake Message"];
+ |||;
+ c<-b [label="Change Cipher Spec,\n Encrypted Handshake Message"];
+ |||;
+ c<-b [label="Application Data"];
+ |||;
+ a<-c [label="Modified Application Data"];
+}

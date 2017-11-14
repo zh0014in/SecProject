@@ -1,15 +1,15 @@
 # Fictional client-server protocol
 msc {
- arcgradient = 8;
+ arcgradient = 5;
 
  a [label="Client"],b [label="Server"];
 
- a=>b [label="data1"];
- a-xb [label="data2"];
- a=>b [label="data3"];
- a<=b [label="ack1, nack2"];
- a=>b [label="data2", arcskip="1"];
+ a->b [label="Client Hello"];
+ a<-b [label="Server Hello,\n Certificate,\n Server Key Exchange,\n Server Hello Done"];
  |||;
- a<=b [label="ack3"];
+ a->b [label="Client Key Exchange,\n Change Cipher Spec,\n Encrypted Handshake Message"];
  |||;
+ a<-b [label="Change Cipher Spec,\n Encrypted Handshake Message"];
+ |||;
+ a<-b [label="Application Data"];
 }
