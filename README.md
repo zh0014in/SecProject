@@ -10,8 +10,9 @@ models - the CSP models, tlsv1_0 is for tls, mitm for the attack<br/><br/>
 msc - msc code and the generated images<br/><br/>
 mscgen - the tool used to draw the msc images<br/><br/>
 packets - the captured packages, use wireshark to open them ,and put ssl as the filter<br/><br/>
+
 To Setup the attacks:<br/>
-1. Install Kali linux and Bettercap<br/>
+1. Install Kali linux and Bettercap<br/>https://www.bettercap.org/<br/>
 2. Install server and client vm, setup the php server<br/>
 3. Run command in Kali 'bettercap --proxy-https --sniffer -G serverIP -T clientIP',<br/>
 4. Run wireshark in Kali and put 'ssl' in the filter bar<br/>
