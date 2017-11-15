@@ -9,4 +9,10 @@ ml - machine learning code, use svm-tune.py to tune the parameters of svm, use s
 models - the CSP models<br/><br/>
 msc - msc code and the generated images<br/><br/>
 mscgen - the tool used to draw the msc images<br/><br/>
-packets - the captured packages
+packets - the captured packages<br/><br/>
+To Setup the attacks:<br/>
+1. Install Kali linux and Bettercap<br/>
+2. Install server and client vm, setup the php server<br/>
+3. Run command in Kali 'bettercap --proxy-https --sniffer -G serverIP -T clientIP',<br/>
+4. Run wireshark in Kali and put 'ssl' in the filter bar<br/>
+5. Access the server's address in client and type in username, password, then login, Kali bettercap should have sniffed the password.
