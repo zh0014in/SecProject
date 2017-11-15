@@ -1,6 +1,0 @@
-C:\Users\zzz\Documents\GitHub\SecProject\SimpleHttpServer\bin\Debug\SimpleHttpServer.exe
-C:\Users\zzz\Documents\GitHub\SecProject\SimpleHttpServer\bin\Debug\SimpleHttpServer.pdb
-C:\Users\zzz\Documents\GitHub\SecProject\SimpleHttpServer\obj\x86\Debug\SimpleHttpServer.csprojResolveAssemblyReference.cache
-C:\Users\zzz\Documents\GitHub\SecProject\SimpleHttpServer\obj\x86\Debug\SimpleHttpServer.csproj.CoreCompileInputs.cache
-C:\Users\zzz\Documents\GitHub\SecProject\SimpleHttpServer\obj\x86\Debug\SimpleHttpServer.exe
-C:\Users\zzz\Documents\GitHub\SecProject\SimpleHttpServer\obj\x86\Debug\SimpleHttpServer.pdb
