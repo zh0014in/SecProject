@@ -9,7 +9,7 @@ ml - machine learning code, use svm-tune.py to tune the parameters of svm, use s
 models - the CSP models, tlsv1_0 is for tls, mitm for the attack<br/><br/>
 msc - msc code and the generated images<br/><br/>
 mscgen - the tool used to draw the msc images<br/><br/>
-packets - the captured packages<br/><br/>
+packets - the captured packages, use wireshark to open them ,and put ssl as the filter<br/><br/>
 To Setup the attacks:<br/>
 1. Install Kali linux and Bettercap<br/>
 2. Install server and client vm, setup the php server<br/>
